@@ -1,0 +1,152 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: "Instrument Serif", "Times New Roman", serif;
+
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-bg-hover: var(--bg-hover);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-ring: var(--ring);
+  --color-lang: var(--lang);
+
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+@layer base {
+  :root,
+  html.dark {
+    --bg: #0a0a0b;
+    --bg-elevated: #121214;
+    --bg-subtle: #1a1a1e;
+    --bg-hover: #222228;
+    --fg: #f2f2f4;
+    --fg-muted: #a0a0ab;
+    --fg-subtle: #71717a;
+    --border: #26262c;
+    --border-strong: #3a3a44;
+    --accent: #c4cad4;
+    --accent-fg: #0a0a0b;
+    --ring: #c4cad4;
+    --lang: #7dd3c0;
+    --hero-glow: color-mix(in oklab, var(--accent) 18%, transparent);
+    --grid-line: color-mix(in oklab, var(--fg) 6%, transparent);
+  }
+
+  html.light {
+    --bg: #f6f5f2;
+    --bg-elevated: #ffffff;
+    --bg-subtle: #eeede8;
+    --bg-hover: #e6e5e0;
+    --fg: #141416;
+    --fg-muted: #5c5c66;
+    --fg-subtle: #8a8a94;
+    --border: #e2e1db;
+    --border-strong: #c9c8c1;
+    --accent: #1c1c22;
+    --accent-fg: #f6f5f2;
+    --ring: #1c1c22;
+    --lang: #0f766e;
+    --hero-glow: color-mix(in oklab, var(--fg) 8%, transparent);
+    --grid-line: color-mix(in oklab, var(--fg) 8%, transparent);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  html.light {
+    color-scheme: light;
+  }
+
+  body {
+    @apply min-h-dvh bg-bg text-fg font-sans antialiased;
+    font-feature-settings: "ss01" on, "cv11" on;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 28%, transparent);
+    color: var(--fg);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero-wash {
+    background:
+      radial-gradient(80% 50% at 50% -10%, var(--hero-glow), transparent 70%),
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--bg-elevated) 70%, transparent) 0%,
+        var(--bg) 72%
+      );
+  }
+
+  .grid-hairline {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(70% 60% at 50% 0, #000, #0000);
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 0, #000, #0000);
+  }
+
+  .link-quiet {
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-quiet:hover {
+    color: var(--fg);
+  }
+
+  .section-pad {
+    @apply px-4 sm:px-6;
+  }
+
+  .section-max {
+    @apply mx-auto w-full max-w-5xl;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
