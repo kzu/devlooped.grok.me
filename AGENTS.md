@@ -498,6 +498,72 @@ If the shared contract isn’t ready, stay sequential.
 6. Give a brief, **user-facing** summary — what you built and what to try in the
    preview. **Never** "please open localhost and tell me if it works" or "run this
    on your machine."
+7. **End-of-turn git sync (required)** — before you finish the turn, commit and
+   push all workspace changes per §"End-of-turn git commit + push" below.
+   Do this on **every** turn that produced any file change, including pure
+   docs/config (e.g. this file). Skip only when `git status` is clean.
+
+### End-of-turn git commit + push (required, every turn)
+
+**When:** as the **last agent action** of every turn that modified the workspace
+(code, config, assets, docs, `AGENTS.md`, `startup.sh`, etc.). Run it after
+verification and before the final user-facing summary closes the turn.
+
+**Why:** the remote is the durable backup for this app. Sandbox state can be
+stopped, restarted, or replaced; a pushed commit keeps the latest work on
+`origin`.
+
+**How (run from `/workspace`):**
+
+1. `git status` + `git diff` (and `git log -3 --oneline` if useful) — see what
+   changed.
+2. If there is **nothing** to commit (`git status` clean), stop — do not create
+   an empty commit.
+3. Stage relevant files: prefer `git add -A` for app work, or targeted paths
+   when only a subset should ship. **Never** stage secrets (`.env`, credentials,
+   private keys). Respect `.gitignore` (do not force-add `node_modules/`, build
+   output that should stay ignored, etc.).
+4. Commit with a **short, factual** message describing *this turn's* change
+   (e.g. `Add Devlooped landing page`, `Darken hero and fix mobile nav`). Use
+   a HEREDOC so multi-line messages stay clean:
+
+```bash
+git add -A
+git commit -m "$(cat <<'EOF'
+Short summary of this turn's changes.
+
+EOF
+)"
+```
+
+5. Push to the tracked remote/branch:
+
+```bash
+git push -u origin HEAD
+```
+
+6. If push fails (auth, non-fast-forward, no remote), **retry once** after a
+   `git pull --rebase` when appropriate; if still blocked, note the failure
+   briefly in the user summary and leave the local commit intact — do not
+   rewrite history or force-push unless the user explicitly asks.
+
+**Rules:**
+
+- **Automatic** — do not ask the user for permission to commit/push; this is
+  standing project policy.
+- **Every turn with changes** — not only "big" features. Small polish turns
+  still commit + push.
+- **One commit per turn** is the default (group that turn's work). Do not
+  invent multiple micro-commits unless the user asks.
+- **Never** force-push (`--force` / `--force-with-lease`) unless the user
+  explicitly requests it.
+- **Never** amend a commit that was already pushed.
+- **Do not** surface git internals to the user unless they care (a one-line
+  "changes saved to the repo" is enough when useful). Prefer product language
+  in the main summary.
+- If git is unavailable or the directory is not a repo, skip quietly after a
+  single check — do not block the product turn on git setup unless the user
+  asked for repo work.
 
 ### Browser QA (agent-driven only; the user is not your QA)
 
@@ -573,10 +639,12 @@ controls:  WASD/vehicle/flight → .grok/skills/controls/SKILL.md; A=left self-t
 ai:        XAI_API_KEY in env → real xAI API: chat (grok-4.5) + Imagine image/video + voice TTS (docs.x.ai) → .grok/skills/xai-api/SKILL.md
 sprites:   doctrine → game-asset-core+specialist; pipeline → generate2dsprite (#FF00FF); maps → generate2dmap; dense motion → video2dsprite
 shots:     write QA PNGs under /workspace/screenshots/ — never /tmp
+git:       END OF EVERY TURN with changes → git add + commit + push origin (no force)
 user sees: live, auto-updating preview in the Grok web UI (never "open localhost")
 say:       product terms only — never ports, paths, localhost, container, or tool names
-success:   app on :8080; processes left running; startup.sh stays correct; short summary
+success:   app on :8080; processes left running; startup.sh stays correct; short summary; changes pushed
 prompt:    often one line — expand into a full product
 never:     ask the user to run commands, open localhost, or QA your environment
 never:     delete or abandon /workspace/startup.sh
+never:     skip end-of-turn commit+push when the working tree is dirty
 ```
