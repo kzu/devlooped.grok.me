@@ -12,11 +12,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
   head: () => ({
     meta: [
-      { title: "Devlooped — Moq & sharper .NET tools" },
+      { title: "Devlooped — Moq & sharper .NET tools · devlooped.grok.me" },
       {
         name: "description",
         content:
-          "Accelerating your dev loop through sharper tools. Open-source .NET libraries and tools from Devlooped — home of Moq, GitInfo, ThisAssembly, and more.",
+          "Accelerating your dev loop through sharper tools. Open-source .NET libraries and tools from Devlooped — home of Moq, GitInfo, ThisAssembly, and more. Highlight site at devlooped.grok.me.",
       },
     ],
   }),

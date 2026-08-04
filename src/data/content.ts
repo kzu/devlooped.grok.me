@@ -1,5 +1,8 @@
 export const site = {
   name: "Devlooped",
+  /** Public hostname of this app */
+  host: "devlooped.grok.me",
+  url: "https://devlooped.grok.me",
   tagline: "Accelerating your dev loop through sharper tools",
   pronunciation: "/dev-lüpt/",
   description:
@@ -14,6 +17,7 @@ export const site = {
   avatar: "https://avatars.githubusercontent.com/u/61533818?v=4",
   osmf: "https://opensourcemaintenancefee.org/",
   sponsors: "https://github.com/sponsors/devlooped",
+  repo: "https://github.com/kzu/devlooped.grok.me",
 };
 
 export const stats = [

@@ -6,7 +6,7 @@ const links = [
   { href: site.x, label: "X" },
   { href: site.website, label: "devlooped.com" },
   { href: site.osmf, label: "OSMF" },
-  { href: "https://github.com/sponsors/devlooped", label: "Sponsors" },
+  { href: site.sponsors, label: "Sponsors" },
 ];
 
 export function SiteFooter() {
@@ -27,6 +27,9 @@ export function SiteFooter() {
                 {site.name}
               </p>
               <p className="text-sm text-fg-muted">{site.tagline}</p>
+              <p className="mt-0.5 font-mono text-xs text-fg-subtle">
+                {site.host}
+              </p>
             </div>
           </div>
         </div>
@@ -50,7 +53,10 @@ export function SiteFooter() {
       </div>
 
       <p className="mt-10 max-w-2xl text-xs leading-relaxed text-fg-subtle">
-        Unofficial highlight page for{" "}
+        <a href={site.url} className="link-quiet font-medium">
+          {site.host}
+        </a>{" "}
+        — unofficial highlight page for{" "}
         <a href={site.github} className="link-quiet">
           Devlooped
         </a>

@@ -6,34 +6,35 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { CreatedWithGrokBanner } from "@/components/created-with-grok-banner";
+import { site } from "@/data/content";
 import appCss from "@/styles.css?url";
+
+const TITLE = "Devlooped — Moq & sharper .NET tools · devlooped.grok.me";
+const DESCRIPTION =
+  "Accelerating your dev loop through sharper tools. Open-source .NET libraries and tools from Devlooped — home of Moq, GitInfo, ThisAssembly, and more. Highlight site at devlooped.grok.me.";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      {
-        title: "Devlooped — Moq & sharper .NET tools",
-      },
-      {
-        name: "description",
-        content:
-          "Accelerating your dev loop through sharper tools. Open-source .NET libraries and tools from Devlooped — home of Moq, GitInfo, ThisAssembly, and more.",
-      },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
       { name: "theme-color", content: "#0a0a0b" },
-      { property: "og:title", content: "Devlooped — Moq & sharper .NET tools" },
-      {
-        property: "og:description",
-        content:
-          "Accelerating your dev loop through sharper tools. Open-source .NET libraries and tools used across the ecosystem.",
-      },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: site.url },
+      { property: "og:site_name", content: site.host },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@devlooped" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      {
+        rel: "canonical",
+        href: site.url,
+      },
       {
         rel: "preconnect",
         href: "https://fonts.googleapis.com",
